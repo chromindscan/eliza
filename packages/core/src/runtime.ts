@@ -572,7 +572,7 @@ export class AgentRuntime implements IAgentRuntime {
     async evaluate(message: Memory, state?: State, didRespond?: boolean) {
         const evaluatorPromises = this.evaluators.map(
             async (evaluator: Evaluator) => {
-                elizaLogger.log("Evaluating", evaluator.name);
+                //elizaLogger.log("Evaluating", evaluator.name);
                 if (!evaluator.handler) {
                     return null;
                 }
