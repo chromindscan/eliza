@@ -12,30 +12,30 @@ fi
 cd "$(dirname "$0")"/..
 
 # clean cache
-echo -e "\033[1mCleaning cache...\033[0m"
-if ! pnpm clean; then
-    echo -e "\033[1;31mFailed to clean cache\033[0m"
-    exit 1
-fi
+# echo -e "\033[1mCleaning cache...\033[0m"
+# if ! pnpm clean; then
+#     echo -e "\033[1;31mFailed to clean cache\033[0m"
+#     exit 1
+# fi
 
 
-# Install dependencies
-echo -e "\033[1mInstalling dependencies...\033[0m"
-if ! pnpm i; then
-    echo -e "\033[1;31mFailed to install dependencies\033[0m"
-    exit 1
-fi
+# # Install dependencies
+# echo -e "\033[1mInstalling dependencies...\033[0m"
+# if ! pnpm i; then
+#     echo -e "\033[1;31mFailed to install dependencies\033[0m"
+#     exit 1
+# fi
 
-# Build project
-echo -e "\033[1mBuilding project...\033[0m"
-if ! pnpm build; then
-    echo -e "\033[1;31mFailed to build project\033[0m"
-    exit 1
-fi
+# # Build project
+# echo -e "\033[1mBuilding project...\033[0m"
+# if ! pnpm build; then
+#     echo -e "\033[1;31mFailed to build project\033[0m"
+#     exit 1
+# fi
 
 # Start project
 echo -e "\033[1mStarting project...\033[0m"
-if ! pnpm start; then
+if ! pnpm start --characters='/Users/prem/Desktop/Chromaway/eliza/characters/eternalai.character.json'; then
     echo -e "\033[1;31mFailed to start project\033[0m"
     exit 1
 fi
