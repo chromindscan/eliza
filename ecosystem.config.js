@@ -3,7 +3,7 @@ module.exports = {
       {
         name: 'eliza',
         script: 'pnpm',
-        args: 'start --characters="/path-to-character.json"',
+        args: 'start --characters="/Users/prem/Desktop/Chromaway/eliza/characters/alphaonchain.character.json"',
         interpreter: 'none',
       },
     ],
