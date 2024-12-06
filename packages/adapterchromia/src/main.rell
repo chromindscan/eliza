@@ -78,3 +78,14 @@ entity cache {
     created_at: timestamp = op_context.last_block_time;
     expires_at: timestamp;
 }
+
+// Create a simple entity that has id and logs
+entity simple_entity {
+    key id: byte_array;
+    logs: text;
+}
+
+// Corresponds to the createSimpleEntity function in the adapter
+operation create_simple_entity(id: byte_array, logs: text) {
+    create simple_entity(id, logs);
+}

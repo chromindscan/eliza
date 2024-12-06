@@ -1,87 +1,75 @@
 import {
     createClient,
-    newSignatureProvider,
     IClient,
     SignatureProvider,
+    newSignatureProvider,
   } from "postchain-client";
+  import { UUID } from "@ai16z/eliza";
 
-  let chromiaClient: IClient;
+  export const clientUrl = "http://localhost:7740";
+  export const blockchainIid = 0;
+  export const signatureProvider: SignatureProvider = newSignatureProvider({
+    privKey: "01010101010101010101010101010101010101010101010101010101010101012",
+  });
 
-  const initClient = async () => {
-    if (chromiaClient) {
-      return chromiaClient;
+
+interface ChromiaDBConfig {
+    clientUrl: string;
+    blockchainIid?: number;
+    blockchainRid?: string;
+    signatureProvider: SignatureProvider;
+  }
+
+  export class ChromiaDB {
+    clientUrl: string | string[];
+    blockchainIid?: number;
+    blockchainRid?: string;
+    client: IClient;
+    signatureProvider: SignatureProvider;
+
+    constructor({
+      clientUrl,
+      blockchainRid,
+      blockchainIid,
+      signatureProvider,
+    }: ChromiaDBConfig) {
+      this.clientUrl = clientUrl;
+      this.blockchainRid = blockchainRid;
+      this.blockchainIid = blockchainIid;
+      this.signatureProvider = signatureProvider;
+      this.client = {} as IClient;
     }
 
-    chromiaClient = await createClient({
-      directoryNodeUrlPool: ["https://dapps0.chromaway.com:7740"],
-      blockchainRid: "E55CAEA35948B8FA13F9E19B201D5A93BAA664AD57E6CE52AE9022B5024B8083",
-    });
-    return chromiaClient;
-  };
+    async init() {
+      if (this.blockchainRid !== undefined) {
+        this.client = await createClient({
+          nodeUrlPool: this.clientUrl,
+          blockchainRid: this.blockchainRid,
+        });
+      } else if (this.blockchainIid !== undefined) {
+        this.client = await createClient({
+          nodeUrlPool: this.clientUrl,
+          blockchainIid: this.blockchainIid,
+        });
+      } else {
+        throw new Error("No blockchain identifier provided");
+      }
+    }
 
-  interface OpenAILog {
-    chat_id: string;
-    base_url: string;
-    request_model: string;
-    request_messages: string; // json
-    user_question: string;
-    request_raw: string; // json
-    response_object: string;
-    response_created: number;
-    response_model: string;
-    response_system_fingerprint: string;
-    response_provider: string;
-    response_usage_prompt_tokens: number;
-    response_usage_completion_tokens: number;
-    response_usage_total_tokens: number;
-    assistant_reply: string;
-    finish_reason: string;
-    response_raw: string;
-  }
+    async createSimpleEntity(id: UUID, logs: string) {
+        return this.client.query({
+            name: "create_simple_entity",
+            args: {
+                id: id,
+                logs: logs,
+            },
+        });
+    }
 
-  export async function addLog({
-    chat_id,
-    base_url,
-    request_model,
-    request_messages,
-    user_question,
-    request_raw,
-    response_object,
-    response_created,
-    response_model,
-    response_system_fingerprint,
-    response_provider,
-    response_usage_prompt_tokens,
-    response_usage_completion_tokens,
-    response_usage_total_tokens,
-    assistant_reply,
-    finish_reason,
-    response_raw,
-  }: OpenAILog, provider: SignatureProvider) {
-    const client = await initClient();
-    await client.signAndSendUniqueTransaction(
-      {
-        name: "add_log",
-        args: [
-          chat_id,
-          base_url,
-          request_model,
-          request_messages,
-          user_question,
-          request_raw,
-          response_object,
-          response_created,
-          response_model,
-          response_system_fingerprint,
-          response_provider,
-          response_usage_prompt_tokens,
-          response_usage_completion_tokens,
-          response_usage_total_tokens,
-          assistant_reply,
-          finish_reason,
-          response_raw,
-        ],
-      },
-      provider
-    );
-  }
+
+
+
+
+}
+
+
