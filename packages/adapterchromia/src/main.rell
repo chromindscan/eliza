@@ -1,0 +1,80 @@
+// Account entity
+entity account {
+    key id: byte_array;
+    name: text;
+    username: text;
+    email: text;
+    avatar_url: text;
+    details: text;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Room entity
+entity room {
+    key id: byte_array;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Memory entity
+entity memory {
+    key id: byte_array;
+    type: text;
+    content: text;
+    embedding: decimal;
+    user: account;
+    agent: account;
+    room: room;
+    is_unique: boolean = true;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Goal entity
+entity goal {
+    key id: byte_array;
+    user: account;
+    name: text;
+    status: text;
+    description: text;
+    room: room;
+    objectives: text;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Log entity
+entity logs {
+    key id: byte_array = op_context.transaction.tx_rid;
+    user: account;
+    body: text;
+    type: text;
+    room: room;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Participant entity
+entity participant {
+    key id: byte_array;
+    user: account;
+    room: room;
+    user_state: text;
+    last_message_read: text;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Relationship entity
+entity relationship {
+    key id: byte_array;
+    user_a: account;
+    user_b: account;
+    status: text;
+    user: account;
+    created_at: timestamp = op_context.last_block_time;
+}
+
+// Cache entity
+entity cache {
+    key key_name: text;
+    key agent_id: text;
+    value: text;
+    created_at: timestamp = op_context.last_block_time;
+    expires_at: timestamp;
+}
