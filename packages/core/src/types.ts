@@ -205,6 +205,7 @@ export type Models = {
     [ModelProviderName.GAIANET]: Model;
     [ModelProviderName.ALI_BAILIAN]: Model;
     [ModelProviderName.VOLENGINE]: Model;
+    [ModelProviderName.CHROMINDSCAN]: Model;
 };
 
 /**
@@ -230,6 +231,7 @@ export enum ModelProviderName {
     GAIANET = "gaianet",
     ALI_BAILIAN = "ali_bailian",
     VOLENGINE = "volengine",
+    CHROMINDSCAN = "chromindscan",
 }
 
 /**
@@ -602,6 +604,7 @@ export enum Clients {
     DIRECT = "direct",
     TWITTER = "twitter",
     TELEGRAM = "telegram",
+    FARCASTER = "farcaster",
 }
 /**
  * Configuration for an agent character
